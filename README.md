@@ -4,7 +4,7 @@ Get a peek before you take your seat.
 
 An interactive Singapore Indoor Stadium explorer with a colour-coded seating plan, an illustrative 3D arena and representative stage views. This personal project explores how concertgoers can understand their section before attending a concert.
 
-**Live site:** https://indoor-seat-view.amandateo9.chatgpt.site
+**Live site:** https://meeyaow2.github.io/seatpeek/
 
 ## Features
 
@@ -42,7 +42,7 @@ One-time setup:
 2. Under Build and deployment, set Source to **GitHub Actions**.
 3. Open Actions → Deploy Seatpeek to GitHub Pages → Run workflow, or rerun the initial failed deployment after enabling Pages.
 
-Expected URL after a successful deployment: https://meeyaow2.github.io/seatpeek/
+GitHub Pages URL: https://meeyaow2.github.io/seatpeek/
 
 Future changes to `dist` on `main` deploy automatically. The existing ChatGPT-hosted site is separate. The optional `vercel.json` also supports static hosting on Vercel.
 
