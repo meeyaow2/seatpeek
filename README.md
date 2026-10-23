@@ -35,7 +35,16 @@ npm run check
 
 ## Deploy
 
-Publish the `dist` directory with a static hosting provider. The included `vercel.json` selects `dist` as the output directory; no build command is needed. For GitHub Pages, configure publication of `dist` through your chosen Pages workflow. This repository does not automatically deploy or change the existing live site.
+GitHub Pages deployment is defined in `.github/workflows/pages.yml` and publishes `dist` after JavaScript checks pass.
+
+One-time setup:
+1. Open repository Settings → Pages.
+2. Under Build and deployment, set Source to **GitHub Actions**.
+3. Open Actions → Deploy Seatpeek to GitHub Pages → Run workflow, or rerun the initial failed deployment after enabling Pages.
+
+Expected URL after a successful deployment: https://meeyaow2.github.io/seatpeek/
+
+Future changes to `dist` on `main` deploy automatically. The existing ChatGPT-hosted site is separate. The optional `vercel.json` also supports static hosting on Vercel.
 
 ## Project structure
 
