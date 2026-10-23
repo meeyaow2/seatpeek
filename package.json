@@ -1,0 +1,9 @@
+{
+  "name": "seatpeek",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An illustrative Singapore Indoor Stadium seating and concert-view explorer",
+  "scripts": {
+    "check": "node --check dist/app.js && node --check dist/crowd.js && node --check dist/reference-layout.js && node --check dist/playlist.js && node --check dist/tracks.js && node --check dist/sections.js"
+  }
+}
