@@ -37,6 +37,7 @@
  play.onclick=()=>{if(ready&&playing){wantsPlay=false;player.pauseVideo()}else start()};
  // Handle minimise separately from all stop actions, including legacy click handlers.
  el('music-close').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();close()},true);
+ toggle.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();if(expanded)close();else open()},true);
  el('playlist-stop').onclick=stop;
  el('playlist-next').onclick=()=>select(index+1,true,false);
  el('playlist-prev').onclick=()=>{if(ready&&player.getCurrentTime()>3){player.seekTo(0,true);wantsPlay=true;player.playVideo()}else select(index-1,true,false)};
