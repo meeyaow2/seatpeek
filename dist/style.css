@@ -88,3 +88,6 @@ dialog a{color:#c4b2ff}#close{color:#dae4f7}.reference-credit{color:#adbed7}
 #toast{background:#c6b5ff;color:#19192d;z-index:60}
 @media(max-width:1100px){aside{background:#121d30;border-color:#33415b}.soundtrack-panel.docked{box-shadow:none}}
 @media(max-width:650px){.viewer-top{padding:6px}.canvas-caption,.immersive .canvas-caption{padding:9px}.preview-settings{border-color:#33415b}}
+
+/* Minimise is separate from the explicit stop action. */
+.playlist-transport{flex-wrap:wrap}#playlist-stop{flex-basis:100%;background:#26344e;color:#e0e8f9;border:1px solid #4b5c78;min-height:38px;font-size:11px}.soundtrack-panel.docked #playlist-stop{min-height:38px}.soundtrack-panel.docked .playlist-transport{flex-wrap:wrap}
