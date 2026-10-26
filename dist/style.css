@@ -30,3 +30,61 @@ html{scroll-padding-top:20px}body{min-width:280px}main,aside,.viewer,.fields>div
 @media(max-width:440px){.soundtrack-panel.docked .music-card{grid-template-columns:minmax(0,1fr);gap:8px}.soundtrack-panel.docked .now-playing{grid-column:1;grid-row:1;margin-right:26px}.soundtrack-panel.docked .playlist-transport{grid-column:1;grid-row:2;justify-content:center}.soundtrack-panel.docked #playlist-status{display:none}.soundtrack-panel.docked .playlist-video{grid-column:1;grid-row:3;justify-self:center}.soundtrack-panel.docked #music-close{right:5px;top:5px}.soundtrack-panel.docked .playlist-video iframe{width:200px;height:200px}.soundtrack-panel.docked .now-playing strong{font-size:11px}.soundtrack-panel.docked .now-playing small{font-size:9px}.soundtrack-panel.docked .playlist-transport button{min-height:40px}.soundtrack-panel.docked .playlist-transport{margin-bottom:0}}
 @media(max-height:500px) and (orientation:landscape){.viewer{height:540px}.soundtrack-panel:not(.docked){top:12px;max-height:calc(100dvh - 24px)}header{min-height:60px}.soundtrack-panel.docked .music-card{grid-template-columns:minmax(0,1fr) 200px}.soundtrack-panel.docked .playlist-video{grid-column:2;grid-row:1/4}.soundtrack-panel.docked #music-close{right:216px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Seatpeek dark concert theme — applies to every device and both crowd modes. */
+:root{color-scheme:dark;--ink:#e5edf9;--muted:#a5b2c9;--accent:#b9a6ff;--surface:#121d30;--border:#2c3a54}
+html,body{background:#090f1c;color:var(--ink)}
+body{background:radial-gradient(ellipse at 78% 0%,#1b2140 0,transparent 48%),#090f1c}
+header{background:#0d1525e8;border-color:#26324a}
+.brand{color:#edf2ff}.brandmark{background:#b9a6ff;color:#121729}.beta{color:#b3bfd4;border-color:#34425e;background:#172238}.location{color:#aab8d0}
+h1,.step span,.settings-heading,.layout-label strong{color:#edf2ff}
+.eyebrow,.step,.layout-label p,.intro,.position-heading,.area-caption,.crowd-picker>span,.capacity,.ticket-status,.height-card p,.height-card small,.notice,.notice strong,footer{color:#a6b5ce}
+.divider{background:#2b3750}.layout-icon{color:#b8a7ef}
+input,select,#section,.ticket-fields input,.height-card input{background:#101c30!important;color:#e8effc!important;border-color:#3b4c68!important}
+input::placeholder{color:#95a5bf;opacity:1}
+label,.ticket-fields label,.fields label,.height-card label{color:#cad6eb}.height-card label span,label small{color:#a4b4cd}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline-color:#c1adff}
+.primary{background:#bca9ff;color:#18172e}.primary:hover{background:#d0c1ff}
+.secondary-preview{background:#18263d;border-color:#465979;color:#d7e3fb}.secondary-preview:disabled{opacity:.55}
+.share,.source-link,footer #about{color:#bfaff5}
+.area-picker,.crowd-buttons{background:#101a2d;border:1px solid #2f3d58}
+.area-picker button,.crowd-buttons button{color:#adbad1}
+.area-picker button.active,.crowd-buttons .active{background:#344364;color:#fff;box-shadow:none}
+.area-option{background:#142037;border-color:#354461;color:#c4d2eb}
+.area-option:hover,.area-option.selected-area{background:#3a3d67;border-color:#b8a3f7;color:#fff}
+.area-browser summary{color:#b9c7df}.height-card,.preview-settings{border-color:#2d3b55}
+.ticket-error,.height-card .ticket-error{color:#ffaaaa}
+.viewer,.viewer.showtime{background:#0c1525;border-color:#34415b;box-shadow:0 12px 45px #0003}
+.viewer-top,.immersive .viewer-top{color:#c6d4ea;background:#101c2eea;border:1px solid #31415c;border-radius:7px;padding:7px 9px}
+.live-dot{background:#b7a0ff}.badge{color:#bdcbe3;border-color:#42516d;background:#1b2941}
+.view-switch,.showtime .view-switch{background:#111e33ed;border-color:#3a4965}
+.view-switch button,.showtime .view-switch button{color:#b5c3db}
+.view-switch .active,.showtime .view-switch button.active{background:#bca9ff;color:#1c1932}
+.viewer .pov-controls{background:#111f35f5;border-color:#455575}
+.pov-controls button{background:#394c72;color:#f3f5ff}.pov-controls label{color:#d0dcef}
+.pov-controls select{background:#1c2c47!important;color:#e8eefc!important}
+.pov-controls input{accent-color:#bca9ff}
+#pause-motion{background:#253451;color:#e1d8ff;border-color:#536080}
+.canvas-caption,.immersive .canvas-caption,.showtime .canvas-caption{background:#101c30ed;border:1px solid #334560;border-radius:10px;padding:12px;color:#e2ebfc}
+.canvas-caption p,.showtime .canvas-caption p,.source-status,.showtime .source-status{color:#adbed8!important}
+.selection-icon,.showtime .selection-icon{background:#2c3b58;color:#d8caff}
+.concept{color:#a3b3cc}
+.gesture,.immersive .gesture,.showtime .gesture{color:#b8c9e3;background:#101c30e8;border-radius:6px;padding:5px 9px}
+.tools,.showtime .tools{background:#15223aef;border-color:#40516f}.tools button,.showtime .tools button{color:#d2def3}
+.legend,.immersive .legend,.showtime .legend{background:#101c30f2;color:#c1cfe6;border-color:#34435f}
+#music-toggle{background:#1a2942;border-color:#425472;color:#e4daff}
+.soundtrack-panel,.soundtrack-panel.docked{background:#111d31;border-color:#3a4c69;box-shadow:0 15px 50px #0006}
+#music-close{color:#d1dcf1}.music-heading span,.music-heading a{color:#b9c7df}
+.now-playing strong,.music-card strong{color:#e8e4ff}.now-playing small{color:#aebfd8}
+.track-art{background:#303253;color:#d2c2ff}
+.playlist-transport button{background:#233552;color:#dce8fc;border-color:#495e80}
+.playlist-transport #soundtrack-play{background:#bca9ff;color:#1a1830}
+#playlist-status,.soundtrack-panel .music-card p{color:#aebed7}
+.playlist-tracks{border-color:#34435f}.playlist-song{background:#111d31;color:#d0dcf2;border-color:#2c3a54}
+.playlist-song:hover{background:#1d2e48}.playlist-song[aria-current="true"]{background:#343453;color:#eee6ff}
+.playlist-song .song-number,.playlist-song .song-duration{color:#a6b6d0}.playlist-note{color:#a4b5ce}
+dialog{background:#121e32;color:#dce6f7;border-color:#465778}dialog::backdrop{background:#030815b8}
+dialog a{color:#c4b2ff}#close{color:#dae4f7}.reference-credit{color:#adbed7}
+#toast{background:#c6b5ff;color:#19192d;z-index:60}
+@media(max-width:1100px){aside{background:#121d30;border-color:#33415b}.soundtrack-panel.docked{box-shadow:none}}
+@media(max-width:650px){.viewer-top{padding:6px}.canvas-caption,.immersive .canvas-caption{padding:9px}.preview-settings{border-color:#33415b}}
