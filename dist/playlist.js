@@ -7,9 +7,9 @@
  const buttons=tracks.map((track,i)=>{const b=document.createElement('button');b.type='button';b.className='playlist-song';b.setAttribute('aria-label',`Play ${track.title}`);const n=document.createElement('span');n.className='song-number';n.textContent=String(i+1).padStart(2,'0');const title=document.createElement('span');title.className='song-title';title.textContent=track.title;const duration=document.createElement('span');duration.className='song-duration';duration.textContent=time(track.duration);b.append(n,title,duration);b.onclick=()=>select(i,true);list.append(b);return b});
  function status(text){el('playlist-status').textContent=text}
  function render(){el('playlist-title').textContent=tracks[index].title;el('playlist-counter').textContent=`${index+1} / ${tracks.length} · ${tracks[index].artist}`;el('soundtrack-source').href='https://www.youtube.com/watch?v='+tracks[index].id;play.textContent=playing?'Ⅱ Pause':'▶ Play';play.setAttribute('aria-label',playing?'Pause playlist':'Play playlist');buttons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)))}
- function open(){expanded=true;panel.hidden=false;panel.classList.remove('docked');el('music-close').setAttribute('aria-label','Minimise soundtrack');toggle.setAttribute('aria-expanded','true');ensurePlayer()}
- function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;panel.classList.remove('docked');toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
- function close(){expanded=false;toggle.setAttribute('aria-expanded','false');panel.hidden=false;panel.classList.add('docked');el('music-close').setAttribute('aria-label','Minimise playlist');}
+ function open(){expanded=true;panel.hidden=false;panel.classList.remove('docked','minimised');el('music-close').setAttribute('aria-label','Minimise soundtrack');toggle.setAttribute('aria-expanded','true');ensurePlayer()}
+ function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;panel.classList.remove('docked','minimised');toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
+ function close(){expanded=false;toggle.setAttribute('aria-expanded','false');panel.hidden=false;panel.classList.add('docked','minimised');el('music-close').setAttribute('aria-label','Minimise playlist');}
  function ensurePlayer(){
   if(player||loading)return;loading=true;
   if(window.YT&&window.YT.Player){createPlayer();return}
