@@ -282,7 +282,7 @@ function frame(now=0){requestAnimationFrame(frame);if(mode!=='plan')humanCrowd.t
 
 function startShowSoundtrack(){window.EXOPlaylist.concert()}
 function closeSoundtrack(){window.EXOPlaylist.stop()}
-$('music-toggle').onclick=()=>window.EXOPlaylist.toggle();$('music-close').onclick=()=>window.EXOPlaylist.close();
+$('music-toggle').onclick=()=>window.EXOPlaylist.toggle();// The playlist module owns its minimise and stop buttons.
 
 // Shared Concert links request the same soundtrack as the Concert button.
 if(crowdMode==='show')startShowSoundtrack();
