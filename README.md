@@ -35,16 +35,16 @@ npm run check
 
 ## Deploy
 
-GitHub Pages deployment is defined in `.github/workflows/pages.yml` and publishes `dist` after JavaScript checks pass.
+GitHub Pages publishes the repository's `main` branch from `/ (root)`.
 
-One-time setup:
-1. Open repository Settings → Pages.
-2. Under Build and deployment, set Source to **GitHub Actions**.
-3. Open Actions → Deploy Seatpeek to GitHub Pages → Run workflow, or rerun the initial failed deployment after enabling Pages.
+- Live URL: https://meeyaow2.github.io/seatpeek/
+- The root `index.html` opens the application in `dist/`, preserving shared URL parameters.
+- `.nojekyll` keeps the site static and prevents README-to-homepage generation.
+- Changes pushed to `main` publish through GitHub's built-in Pages deployment.
+- `.github/workflows/pages.yml` checks JavaScript and entry points only; it does not run a competing deployment.
+- In Settings → Pages, keep Source set to **Deploy from a branch**, branch **main**, folder **/ (root)**.
 
-GitHub Pages URL: https://meeyaow2.github.io/seatpeek/
-
-Future changes to `dist` on `main` deploy automatically. The existing ChatGPT-hosted site is separate. The optional `vercel.json` also supports static hosting on Vercel.
+The existing ChatGPT-hosted site is separate. The optional `vercel.json` supports static hosting on Vercel.
 
 ## Project structure
 
