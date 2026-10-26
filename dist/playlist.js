@@ -2,14 +2,14 @@
 (()=>{
  const el=id=>document.getElementById(id),tracks=window.EXO_TRACKS;
  let index=0,player=null,ready=false,wantsPlay=false,loading=false,playing=false,expanded=false,stopped=false;
- const panel=el('soundtrack-panel'),toggle=el('music-toggle'),list=el('playlist-tracks'),play=el('soundtrack-play'),miniTab=el('soundtrack-tab');
+ const panel=el('soundtrack-panel'),list=el('playlist-tracks'),play=el('soundtrack-play'),miniTab=el('soundtrack-tab');
  const time=ms=>`${Math.floor(ms/60000)}:${String(Math.floor(ms/1000)%60).padStart(2,'0')}`;
  const buttons=tracks.map((track,i)=>{const b=document.createElement('button');b.type='button';b.className='playlist-song';b.setAttribute('aria-label',`Play ${track.title}`);const n=document.createElement('span');n.className='song-number';n.textContent=String(i+1).padStart(2,'0');const title=document.createElement('span');title.className='song-title';title.textContent=track.title;const duration=document.createElement('span');duration.className='song-duration';duration.textContent=time(track.duration);b.append(n,title,duration);b.onclick=()=>select(i,true);list.append(b);return b});
  function status(text){el('playlist-status').textContent=text}
  function render(){el('playlist-title').textContent=tracks[index].title;el('playlist-counter').textContent=`${index+1} / ${tracks.length} · ${tracks[index].artist}`;el('soundtrack-source').href='https://www.youtube.com/watch?v='+tracks[index].id;play.textContent=playing?'Ⅱ':'▶';play.title=playing?'Pause':'Play';miniTab.querySelector('.soundtrack-tab-title').textContent=tracks[index].title;miniTab.setAttribute('aria-label','Expand soundtrack: '+tracks[index].title);play.setAttribute('aria-label',playing?'Pause playlist':'Play playlist');buttons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)))}
- function open(){expanded=true;panel.hidden=false;miniTab.hidden=true;panel.classList.remove('docked','minimised','parked');toggle.setAttribute('aria-expanded','true');miniTab.setAttribute('aria-expanded','true');ensurePlayer()}
- function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;miniTab.hidden=true;toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
- function close(){expanded=false;panel.hidden=true;miniTab.hidden=false;toggle.setAttribute('aria-expanded','false');miniTab.setAttribute('aria-expanded','false');}
+ function open(){expanded=true;panel.hidden=false;miniTab.hidden=true;panel.classList.remove('docked','minimised','parked');miniTab.setAttribute('aria-expanded','true');ensurePlayer()}
+ function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;miniTab.hidden=false;render();status('Stopped. Press Play to start again.')}
+ function close(){expanded=false;panel.hidden=true;miniTab.hidden=false;miniTab.setAttribute('aria-expanded','false');}
  function ensurePlayer(){
   if(player||loading)return;loading=true;
   if(window.YT&&window.YT.Player){createPlayer();return}
@@ -37,17 +37,16 @@
  play.onclick=()=>{if(ready&&playing){wantsPlay=false;player.pauseVideo()}else start()};
  // Handle minimise separately from all stop actions, including legacy click handlers.
  el('music-close').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();close()},true);
- toggle.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();if(expanded)close();else open()},true);
  el('playlist-minimise').onclick=close;
  miniTab.onclick=open;
  el('playlist-stop').onclick=stop;
  el('playlist-next').onclick=()=>select(index+1,true,false);
  el('playlist-prev').onclick=()=>{if(ready&&player.getCurrentTime()>3){player.seekTo(0,true);wantsPlay=true;player.playVideo()}else select(index-1,true,false)};
- document.addEventListener('pointerdown',event=>{if(expanded&&!panel.contains(event.target)&&!toggle.contains(event.target))close()});
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&expanded){close();toggle.focus()}});
+ document.addEventListener('pointerdown',event=>{if(expanded&&!panel.contains(event.target)&&!miniTab.contains(event.target))close()});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&expanded){close();miniTab.focus()}});
  // Never keep a hidden YouTube player running.
  document.addEventListener('visibilitychange',()=>{if(document.hidden&&ready){wantsPlay=false;player.pauseVideo()}});
- window.EXOPlaylist={play:start,concert:startConcert,close,stop,toggle:()=>expanded?close():open()};render();
+ window.EXOPlaylist={play:start,concert:startConcert,close,stop,toggle:()=>expanded?close():open()};render();close();
  // Prepare a paused player before the Concert click, preserving its user gesture.
  ensurePlayer();
 })();
