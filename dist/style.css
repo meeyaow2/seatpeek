@@ -104,3 +104,14 @@ dialog a{color:#c4b2ff}#close{color:#dae4f7}.reference-credit{color:#adbed7}
 .soundtrack-panel.docked.minimised .playlist-video{width:200px;min-width:200px;align-self:center}
 .soundtrack-panel.docked.minimised .playlist-video iframe{width:200px;height:200px;min-height:200px}
 @media(max-width:1100px){.soundtrack-panel.docked.minimised{justify-self:end;width:224px}.soundtrack-panel.docked.minimised .playlist-video{grid-column:auto;grid-row:auto}}
+
+/* Park a still-visible player below the arena without remounting its iframe. */
+.soundtrack-parking{margin:0 3.6% 20px;max-width:1670px;min-height:310px;position:relative;border-top:1px solid #2c3a54}
+.soundtrack-parking[hidden]{display:none}
+.soundtrack-panel.docked.minimised.parked{position:absolute;bottom:auto;right:auto;z-index:35;margin:0}
+.playlist-transport #playlist-minimise{flex-basis:100%;background:#1a2942;color:#d3c4ff;border:1px solid #536283;min-height:38px;font-size:11px}
+.soundtrack-panel.docked.minimised .playlist-transport{flex-wrap:wrap}
+.soundtrack-panel.docked.minimised .playlist-transport #playlist-minimise{display:block;flex-basis:100%;min-width:0;min-height:34px;font-size:11px}
+.soundtrack-panel.parked #playlist-minimise{display:none!important}
+@media(max-width:1100px){.soundtrack-panel.docked.minimised.parked{position:absolute;grid-column:auto;justify-self:auto}.soundtrack-parking{margin-inline:24px}}
+@media(max-width:650px){.soundtrack-parking{margin-inline:12px}}

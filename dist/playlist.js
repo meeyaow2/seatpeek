@@ -7,8 +7,14 @@
  const buttons=tracks.map((track,i)=>{const b=document.createElement('button');b.type='button';b.className='playlist-song';b.setAttribute('aria-label',`Play ${track.title}`);const n=document.createElement('span');n.className='song-number';n.textContent=String(i+1).padStart(2,'0');const title=document.createElement('span');title.className='song-title';title.textContent=track.title;const duration=document.createElement('span');duration.className='song-duration';duration.textContent=time(track.duration);b.append(n,title,duration);b.onclick=()=>select(i,true);list.append(b);return b});
  function status(text){el('playlist-status').textContent=text}
  function render(){el('playlist-title').textContent=tracks[index].title;el('playlist-counter').textContent=`${index+1} / ${tracks.length} · ${tracks[index].artist}`;el('soundtrack-source').href='https://www.youtube.com/watch?v='+tracks[index].id;play.textContent=playing?'Ⅱ Pause':'▶ Play';play.setAttribute('aria-label',playing?'Pause playlist':'Play playlist');buttons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)))}
- function open(){expanded=true;panel.hidden=false;panel.classList.remove('docked','minimised');el('music-close').setAttribute('aria-label','Minimise soundtrack');toggle.setAttribute('aria-expanded','true');ensurePlayer()}
- function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;panel.classList.remove('docked','minimised');toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
+ function clearParking(){const shelf=el('soundtrack-parking');shelf.hidden=true;panel.classList.remove('parked');panel.style.removeProperty('top');panel.style.removeProperty('left');panel.style.removeProperty('right')}
+ function positionParkedPlayer(){if(!panel.classList.contains('parked'))return;const shelf=el('soundtrack-parking');shelf.style.minHeight=(panel.offsetHeight+24)+'px';const target=shelf.getBoundingClientRect(),parent=panel.offsetParent;const origin=parent?parent.getBoundingClientRect():{top:0,left:0};panel.style.top=(target.top-origin.top+(parent?.scrollTop||0)+12)+'px';panel.style.left=(target.right-origin.left+(parent?.scrollLeft||0)-panel.offsetWidth-12)+'px'}
+ function park(){close();el('soundtrack-parking').hidden=false;panel.classList.add('parked');positionParkedPlayer()}
+ window.addEventListener('resize',positionParkedPlayer);
+ new ResizeObserver(positionParkedPlayer).observe(panel);
+ new ResizeObserver(positionParkedPlayer).observe(document.querySelector('main'));
+ function open(){clearParking();expanded=true;panel.hidden=false;panel.classList.remove('docked','minimised');el('music-close').setAttribute('aria-label','Minimise soundtrack');toggle.setAttribute('aria-expanded','true');ensurePlayer()}
+ function stop(){clearParking();wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;panel.classList.remove('docked','minimised');toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
  function close(){expanded=false;toggle.setAttribute('aria-expanded','false');panel.hidden=false;panel.classList.add('docked','minimised');el('music-close').setAttribute('aria-label','Minimise playlist');}
  function ensurePlayer(){
   if(player||loading)return;loading=true;
@@ -38,6 +44,7 @@
  // Handle minimise separately from all stop actions, including legacy click handlers.
  el('music-close').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();close()},true);
  toggle.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();if(expanded)close();else open()},true);
+ el('playlist-minimise').onclick=park;
  el('playlist-stop').onclick=stop;
  el('playlist-next').onclick=()=>select(index+1,true,false);
  el('playlist-prev').onclick=()=>{if(ready&&player.getCurrentTime()>3){player.seekTo(0,true);wantsPlay=true;player.playVideo()}else select(index-1,true,false)};
