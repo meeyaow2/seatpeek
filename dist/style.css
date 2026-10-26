@@ -115,3 +115,16 @@ dialog a{color:#c4b2ff}#close{color:#dae4f7}.reference-credit{color:#adbed7}
 .soundtrack-panel.parked #playlist-minimise{display:none!important}
 @media(max-width:1100px){.soundtrack-panel.docked.minimised.parked{position:absolute;grid-column:auto;justify-self:auto}.soundtrack-parking{margin-inline:24px}}
 @media(max-width:650px){.soundtrack-parking{margin-inline:12px}}
+
+/* True window-to-tab minimisation. No footer shelf or secondary popout. */
+.soundtrack-panel:not([hidden]){position:fixed;top:auto;bottom:16px;right:16px;left:auto;width:330px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 32px);padding:15px;z-index:60}
+.soundtrack-panel[hidden],.soundtrack-tab[hidden]{display:none!important}
+.soundtrack-tab{position:fixed;right:16px;bottom:16px;z-index:60;display:flex;align-items:center;gap:9px;max-width:min(240px,calc(100vw - 24px));min-height:44px;padding:10px 14px;border:1px solid #74669e;border-radius:10px;background:#20243e;color:#e7ddff;box-shadow:0 5px 22px #0005;font-size:12px}
+.soundtrack-tab-title{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-window-actions{position:absolute;top:9px;right:9px;display:flex;gap:4px;z-index:2}
+.player-window-actions #music-close,.player-window-actions #playlist-minimise{position:static;display:grid;place-items:center;width:34px;height:34px;min-height:34px;margin:0;padding:0;border:1px solid #43516c;border-radius:6px;background:#1c2940;color:#e2dcff;font-size:21px;line-height:1}
+.soundtrack-panel .music-heading{padding-right:77px;margin:4px 0 15px;min-height:28px;flex-wrap:wrap}
+.soundtrack-panel .playlist-transport{flex-wrap:nowrap;gap:8px}
+.soundtrack-panel .playlist-transport button,.soundtrack-panel .playlist-transport #soundtrack-play,.soundtrack-panel .playlist-transport #playlist-stop{flex:1 1 0;flex-basis:auto;min-width:40px;min-height:42px;font-size:17px}
+.soundtrack-panel #playlist-stop{background:#26344e;color:#e0e8f9;border-color:#4b5c78}
+@media(max-width:650px){.soundtrack-panel:not([hidden]){right:12px;bottom:12px;width:330px;max-height:calc(100dvh - 24px)}.soundtrack-tab{right:12px;bottom:12px}}

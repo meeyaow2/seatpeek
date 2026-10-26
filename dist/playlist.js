@@ -1,21 +1,15 @@
-/* Official YouTube playback; the player stays visible while music is playing. */
+/* Soundtrack window and collapsible tab share one mounted player. */
 (()=>{
  const el=id=>document.getElementById(id),tracks=window.EXO_TRACKS;
  let index=0,player=null,ready=false,wantsPlay=false,loading=false,playing=false,expanded=false,stopped=false;
- const panel=el('soundtrack-panel'),toggle=el('music-toggle'),list=el('playlist-tracks'),play=el('soundtrack-play');
+ const panel=el('soundtrack-panel'),toggle=el('music-toggle'),list=el('playlist-tracks'),play=el('soundtrack-play'),miniTab=el('soundtrack-tab');
  const time=ms=>`${Math.floor(ms/60000)}:${String(Math.floor(ms/1000)%60).padStart(2,'0')}`;
  const buttons=tracks.map((track,i)=>{const b=document.createElement('button');b.type='button';b.className='playlist-song';b.setAttribute('aria-label',`Play ${track.title}`);const n=document.createElement('span');n.className='song-number';n.textContent=String(i+1).padStart(2,'0');const title=document.createElement('span');title.className='song-title';title.textContent=track.title;const duration=document.createElement('span');duration.className='song-duration';duration.textContent=time(track.duration);b.append(n,title,duration);b.onclick=()=>select(i,true);list.append(b);return b});
  function status(text){el('playlist-status').textContent=text}
- function render(){el('playlist-title').textContent=tracks[index].title;el('playlist-counter').textContent=`${index+1} / ${tracks.length} · ${tracks[index].artist}`;el('soundtrack-source').href='https://www.youtube.com/watch?v='+tracks[index].id;play.textContent=playing?'Ⅱ Pause':'▶ Play';play.setAttribute('aria-label',playing?'Pause playlist':'Play playlist');buttons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)))}
- function clearParking(){const shelf=el('soundtrack-parking');shelf.hidden=true;panel.classList.remove('parked');panel.style.removeProperty('top');panel.style.removeProperty('left');panel.style.removeProperty('right')}
- function positionParkedPlayer(){if(!panel.classList.contains('parked'))return;const shelf=el('soundtrack-parking');shelf.style.minHeight=(panel.offsetHeight+24)+'px';const target=shelf.getBoundingClientRect(),parent=panel.offsetParent;const origin=parent?parent.getBoundingClientRect():{top:0,left:0};panel.style.top=(target.top-origin.top+(parent?.scrollTop||0)+12)+'px';panel.style.left=(target.right-origin.left+(parent?.scrollLeft||0)-panel.offsetWidth-12)+'px'}
- function park(){close();el('soundtrack-parking').hidden=false;panel.classList.add('parked');positionParkedPlayer()}
- window.addEventListener('resize',positionParkedPlayer);
- new ResizeObserver(positionParkedPlayer).observe(panel);
- new ResizeObserver(positionParkedPlayer).observe(document.querySelector('main'));
- function open(){clearParking();expanded=true;panel.hidden=false;panel.classList.remove('docked','minimised');el('music-close').setAttribute('aria-label','Minimise soundtrack');toggle.setAttribute('aria-expanded','true');ensurePlayer()}
- function stop(){clearParking();wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;panel.classList.remove('docked','minimised');toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
- function close(){expanded=false;toggle.setAttribute('aria-expanded','false');panel.hidden=false;panel.classList.add('docked','minimised');el('music-close').setAttribute('aria-label','Minimise playlist');}
+ function render(){el('playlist-title').textContent=tracks[index].title;el('playlist-counter').textContent=`${index+1} / ${tracks.length} · ${tracks[index].artist}`;el('soundtrack-source').href='https://www.youtube.com/watch?v='+tracks[index].id;play.textContent=playing?'Ⅱ':'▶';play.title=playing?'Pause':'Play';miniTab.querySelector('.soundtrack-tab-title').textContent=tracks[index].title;miniTab.setAttribute('aria-label','Expand soundtrack: '+tracks[index].title);play.setAttribute('aria-label',playing?'Pause playlist':'Play playlist');buttons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)))}
+ function open(){expanded=true;panel.hidden=false;miniTab.hidden=true;panel.classList.remove('docked','minimised','parked');toggle.setAttribute('aria-expanded','true');miniTab.setAttribute('aria-expanded','true');ensurePlayer()}
+ function stop(){wantsPlay=false;stopped=true;if(ready)player.stopVideo();playing=false;expanded=false;panel.hidden=true;miniTab.hidden=true;toggle.setAttribute('aria-expanded','false');render();status('Stopped. Press Play to start again.')}
+ function close(){expanded=false;panel.hidden=true;miniTab.hidden=false;toggle.setAttribute('aria-expanded','false');miniTab.setAttribute('aria-expanded','false');}
  function ensurePlayer(){
   if(player||loading)return;loading=true;
   if(window.YT&&window.YT.Player){createPlayer();return}
@@ -24,11 +18,11 @@
  }
  function createPlayer(){
   if(player)return;
-  player=new YT.Player('soundtrack-video',{width:'298',height:'200',videoId:tracks[index].id,playerVars:{playsinline:1,rel:0,autoplay:wantsPlay&&!panel.hidden?1:0,origin:location.origin},events:{
-   onReady:()=>{ready=true;loading=false;if(wantsPlay&&!panel.hidden){player.loadVideoById(tracks[index].id);status('Starting playback…')}else{player.cueVideoById(tracks[index].id);status('Ready. Choose a song or press Play.')}},
+  player=new YT.Player('soundtrack-video',{width:'298',height:'200',videoId:tracks[index].id,playerVars:{playsinline:1,rel:0,autoplay:wantsPlay&&(!panel.hidden||!miniTab.hidden)?1:0,origin:location.origin},events:{
+   onReady:()=>{ready=true;loading=false;if(wantsPlay&&(!panel.hidden||!miniTab.hidden)){player.loadVideoById(tracks[index].id);status('Starting playback…')}else{player.cueVideoById(tracks[index].id);status('Ready. Choose a song or press Play.')}},
    onStateChange:e=>{
-    if(e.data===YT.PlayerState.PLAYING){if(panel.hidden||document.hidden){player.pauseVideo();return}playing=true;wantsPlay=true;status('Playing · next song starts automatically.')}
-    else if(e.data===YT.PlayerState.ENDED){playing=false;if(wantsPlay&&!panel.hidden){if(index<tracks.length-1)select(index+1,true,false);else{wantsPlay=false;status('Playlist finished. Choose a song to play again.')}}}
+    if(e.data===YT.PlayerState.PLAYING){if((panel.hidden&&miniTab.hidden)||document.hidden){player.pauseVideo();return}playing=true;wantsPlay=true;status('Playing · next song starts automatically.')}
+    else if(e.data===YT.PlayerState.ENDED){playing=false;if(wantsPlay&&(!panel.hidden||!miniTab.hidden)){if(index<tracks.length-1)select(index+1,true,false);else{wantsPlay=false;status('Playlist finished. Choose a song to play again.')}}}
     else if(e.data===YT.PlayerState.PAUSED){playing=false;wantsPlay=false;status('Paused.')}
     else if(e.data===YT.PlayerState.BUFFERING){status('Loading song…')}
     render();
@@ -38,13 +32,14 @@
   }});
  }
  function select(next,autoplay,reveal=true){index=(next+tracks.length)%tracks.length;wantsPlay=autoplay;stopped=false;playing=false;render();if(reveal)open();else ensurePlayer();status(autoplay?'Starting '+tracks[index].title+'…':'Ready.');if(ready){if(autoplay)player.loadVideoById(tracks[index].id);else player.cueVideoById(tracks[index].id)}}
- function start(){wantsPlay=true;if(panel.hidden)open();else ensurePlayer();status('Starting '+tracks[index].title+'…');if(ready){if(stopped)player.loadVideoById(tracks[index].id);else player.playVideo()}stopped=false}
+ function start(){wantsPlay=true;if(panel.hidden&&miniTab.hidden)open();else ensurePlayer();status('Starting '+tracks[index].title+'…');if(ready){if(stopped)player.loadVideoById(tracks[index].id);else player.playVideo()}stopped=false}
  function startConcert(){wantsPlay=true;if(panel.hidden)open();else ensurePlayer();if(expanded)close();status('Starting concert soundtrack…');if(ready){player.unMute();if(stopped)player.loadVideoById(tracks[index].id);else player.playVideo()}stopped=false}
  play.onclick=()=>{if(ready&&playing){wantsPlay=false;player.pauseVideo()}else start()};
  // Handle minimise separately from all stop actions, including legacy click handlers.
  el('music-close').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();close()},true);
  toggle.addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();if(expanded)close();else open()},true);
- el('playlist-minimise').onclick=park;
+ el('playlist-minimise').onclick=close;
+ miniTab.onclick=open;
  el('playlist-stop').onclick=stop;
  el('playlist-next').onclick=()=>select(index+1,true,false);
  el('playlist-prev').onclick=()=>{if(ready&&player.getCurrentTime()>3){player.seekTo(0,true);wantsPlay=true;player.playVideo()}else select(index-1,true,false)};
